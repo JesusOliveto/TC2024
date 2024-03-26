@@ -4,14 +4,18 @@ grammar compiladores;
  package compiladores;
  }
 
-fragment LETRA : [A-Za-z] ;
-fragment DIGITO : [0-9] ;
+
+//------------------------------------------------------------------------------
+//TEST
+
+//fragment LETRA : [A-Za-z] ;
+//fragment DIGITO : [0-9] ;
 
 
-NUMERO : DIGITO+ ;
+//NUMERO : DIGITO+ ;
 //OTRO : . ;
 
-ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
+//ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
 
 // s : ID     { System.out.println("ID ->" + $ID.getText() + "<--"); }         s
 //   | NUMERO { System.out.println("NUMERO ->" + $NUMERO.getText() + "<--"); } s
@@ -19,11 +23,22 @@ ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
 //   | EOF
 //   ;
 
+//------------------------------------------------------------------------------
+//ENTREGABLE 1
+// Debe entregar un archivo ANTLR que contenga las expresiones regulares y reglas sintácticas necesarias para realizar la verificación del balance de llaves, corchetes y paréntesis.
+
 PA : '(' ;
 PC : ')' ; 
+CA : '[' ;
+CC : ']' ;
+LA : '{' ;
+LC : '}' ; 
 
 si : s EOF ;
 
-s : PA s PC s
+s : PA s PC s       //checkeo parentesis
+    | CA s CC s     //checkeo corchetes
+    | LA s LC s     //checkeo llaves
     |
     ;
+
