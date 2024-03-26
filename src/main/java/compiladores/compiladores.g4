@@ -24,21 +24,21 @@ grammar compiladores;
 //   ;
 
 //------------------------------------------------------------------------------
-//ENTREGABLE 1
-// Debe entregar un archivo ANTLR que contenga las expresiones regulares y reglas sintácticas necesarias para realizar la verificación del balance de llaves, corchetes y paréntesis.
+// //ENTREGABLE 1
+// // Debe entregar un archivo ANTLR que contenga las expresiones regulares y reglas sintácticas necesarias para realizar la verificación del balance de llaves, corchetes y paréntesis.
 
-PA : '(' ;
-PC : ')' ; 
-CA : '[' ;
-CC : ']' ;
-LA : '{' ;
-LC : '}' ; 
+// PA : '(' ;
+// PC : ')' ; 
+// CA : '[' ;
+// CC : ']' ;
+// LA : '{' ;
+// LC : '}' ; 
 
-si : s EOF ;
+// si : s EOF ;
 
-s : PA s PC s       //checkeo parentesis
-    | CA s CC s     //checkeo corchetes
-    | LA s LC s     //checkeo llaves
-    |
-    ;
+// s : PA s PC s       //checkeo parentesis
+//     | CA s CC s     //checkeo corchetes
+//     | LA s LC s     //checkeo llaves
+//     |
+//     ;
 
