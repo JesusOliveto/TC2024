@@ -73,15 +73,15 @@ PARES: [02468] ;
 SEPARADOR: '/' ;
 SALTO_LINEA: '\r'? '\n' | '\r' ;
 
-//Definir una Expresión Regular para capturar fechas del texto a analizar(formato DD/MM/YYYY).
-FECHA : DIGIT DIGIT SEPARADOR DIGIT DIGIT SEPARADOR DIGIT DIGIT DIGIT DIGIT
-      ;
 
 // Definir una Expresión Regular para capturar fechas correspondientes a los meses pares (formato DD/MM/YYYY).
 MESES_PARES : DIGIT DIGIT SEPARADOR PARES PARES SEPARADOR DIGIT DIGIT DIGIT DIGIT
             | DIGIT DIGIT SEPARADOR DIGIT PARES SEPARADOR DIGIT DIGIT DIGIT DIGIT
             ;
 //             dia        /   meses pares    /     año
+
+FECHA : DIGIT DIGIT SEPARADOR DIGIT DIGIT SEPARADOR DIGIT DIGIT DIGIT DIGIT
+      ;
 
 
 //Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 08:00 y las 12:59 (formato HH:MM).
@@ -106,10 +106,10 @@ HORA_CUALQUIERA : DIGIT DIGIT ':' DIGIT DIGIT
 
 si : s EOF;
 
-s : MESES_PARES  s
+s : MESES_PARES {System.out.println("MES PAR ->" + $MESES_PARES.getText() + "<--" + "EN LINEA" + $MESES_PARES.getLine());} s
   | FECHA s
-  | HORA_MANANA  s
-  | HORA_NOCHE  s
+  | HORA_MANANA {System.out.println("HORA MANANA ->" + $HORA_MANANA.getText() + "<--" "en linea " + $HORA_MANANA.getLine());} s
+  | HORA_NOCHE  {System.out.println("HORA NOCHE ->" + $HORA_NOCHE.getText() + "<--" "en linea " + $HORA_NOCHE.getLine());} s
   | HORA_CUALQUIERA s
   | OTRO  s
   | SALTO_LINEA s
