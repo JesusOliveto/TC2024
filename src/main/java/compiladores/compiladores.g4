@@ -108,8 +108,8 @@ si : s EOF;
 
 s : MESES_PARES {System.out.println("MES PAR ->" + $MESES_PARES.getText() + "<--" + "EN LINEA" + $MESES_PARES.getLine());} s
   | FECHA s
-  | HORA_MANANA {System.out.println("HORA MANANA ->" + $HORA_MANANA.getText() + "<--" "en linea " + $HORA_MANANA.getLine());} s
-  | HORA_NOCHE  {System.out.println("HORA NOCHE ->" + $HORA_NOCHE.getText() + "<--" "en linea " + $HORA_NOCHE.getLine());} s
+  | HORA_MANANA {System.out.println("HORA MANANA ->" + $HORA_MANANA.getText() + "<--" + "EN LINEA " + $HORA_MANANA.getLine());} s
+  | HORA_NOCHE  {System.out.println("HORA NOCHE ->" + $HORA_NOCHE.getText() + "<--" + "EN LINEA " + $HORA_NOCHE.getLine());} s
   | HORA_CUALQUIERA s
   | OTRO  s
   | SALTO_LINEA s
