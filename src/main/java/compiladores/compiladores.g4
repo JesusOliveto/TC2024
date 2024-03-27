@@ -45,30 +45,6 @@ grammar compiladores;
 //------------------------------------------------------------------------------
 // //ENTREGABLE 2
 
-// TOKENS
-DIGIT: [0-9] ;
-WS: [ \t\n\r]+ -> skip ;
-OTRO : . ;
-PARES: [02468] ;
-
-// Definir una Expresión Regular para capturar fechas correspondientes a los meses pares (formato DD/MM/YYYY).
-meses_pares : DIGIT DIGIT '/' ( '0' '2' '4' '6' '8' | '1' '0' | '1' '2' ) '/' DIGIT DIGIT DIGIT DIGIT ;
-//             dia        /     meses pares                               /     año
-
-
-
-//Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 08:00 y las 12:59 (formato HH:MM).
-hora_manana : '0' ('8' | '9') ':' DIGIT DIGIT
-            | '1' ('0' | '1' | '2') ':' DIGIT DIGIT
-            ;
-
-//Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 18:30 y las 21:30 (formato HH:MM).
-hora_noche : '1' ('8' | '9') ':' '3' ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9')
-           | '1' '9' ':' '3' '0'
-           | '2' ('0' | '1') ':' '3' '0'
-           | '2' '1' ':' '3' '0'
-           ;
-
 
 /*texto a analizar:
 29/03/2019	19:09
@@ -90,13 +66,52 @@ hora_noche : '1' ('8' | '9') ':' '3' ('0' | '1' | '2' | '3' | '4' | '5' | '6' | 
 22/12/2017	19:37
  */
 
+// TOKENS
+DIGIT: [0-9] ;
+OTRO : . ;
+PARES: [02468] ;
+SEPARADOR: '/' ;
+SALTO_LINEA: '\r'? '\n' | '\r' ;
+
+//Definir una Expresión Regular para capturar fechas del texto a analizar(formato DD/MM/YYYY).
+FECHA : DIGIT DIGIT SEPARADOR DIGIT DIGIT SEPARADOR DIGIT DIGIT DIGIT DIGIT
+      ;
+
+// Definir una Expresión Regular para capturar fechas correspondientes a los meses pares (formato DD/MM/YYYY).
+MESES_PARES : DIGIT DIGIT SEPARADOR PARES PARES SEPARADOR DIGIT DIGIT DIGIT DIGIT
+            | DIGIT DIGIT SEPARADOR DIGIT PARES SEPARADOR DIGIT DIGIT DIGIT DIGIT
+            ;
+//             dia        /   meses pares    /     año
+
+
+//Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 08:00 y las 12:59 (formato HH:MM).
+HORA_MANANA : '0' ('8' | '9') ':' DIGIT DIGIT
+            | '1' ('0' | '1' | '2') ':' DIGIT DIGIT
+            ;
+
+//Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 18:30 y las 21:30 (formato HH:MM).
+HORA_NOCHE : '1' ('8' | '9') ':' '3' ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9')
+           | '1' '9' ':' '3' '0'
+           | '2' ('0' | '1') ':' '3' '0'
+           | '2' '1' ':' '3' '0'
+           ;
+
+HORA_CUALQUIERA : DIGIT DIGIT ':' DIGIT DIGIT
+                ;
+
+
 
 
 //Al ejecutar el programa, deberá imprimir en pantalla el número de línea, el tipo de token y el token encontrado (ver archivo ejemplo adjunto).
 
-s : meses_pares  s
-  | hora_manana  s
-  | hora_noche  s
+si : s EOF;
+
+s : MESES_PARES  s
+  | FECHA s
+  | HORA_MANANA  s
+  | HORA_NOCHE  s
+  | HORA_CUALQUIERA s
   | OTRO  s
+  | SALTO_LINEA s
   | EOF
   ;
