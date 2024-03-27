@@ -51,21 +51,21 @@ WS: [ \t\n\r]+ -> skip ;
 OTRO : . ;
 
 // Definir una Expresión Regular para capturar fechas correspondientes a los meses pares (formato DD/MM/YYYY).
-meses_pares : DIGIT DIGIT '/' ( '0' [2468] | '1' [02] ) '/' DIGIT DIGIT DIGIT DIGIT ;
+meses_pares : DIGIT DIGIT '/' ( '0' '2' '4' '6' '8' | '1' '0' | '1' '2' ) '/' DIGIT DIGIT DIGIT DIGIT ;
 //             dia        /     meses pares                               /     año
 
 
 
 //Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 08:00 y las 12:59 (formato HH:MM).
-hora_manana : '0' [8-9] ':' DIGIT DIGIT
-            | '1' [0-2] ':' DIGIT DIGIT
+hora_manana : '0' ('8' | '9') ':' DIGIT DIGIT
+            | '1' ('0' | '1' | '2') ':' DIGIT DIGIT
             ;
 
 //Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 18:30 y las 21:30 (formato HH:MM).
-hora_noche : '1' [8-9] ':' '3' [0-9]
-           | '1' [9] ':' '3' [0]
-           | '2' [0-1] ':' '3' [0]
-           | '2' [1] ':' '3' [0]
+hora_noche : '1' ('8' | '9') ':' '3' ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9')
+           | '1' '9' ':' '3' '0'
+           | '2' ('0' | '1') ':' '3' '0'
+           | '2' '1' ':' '3' '0'
            ;
 
  
