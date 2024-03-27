@@ -51,20 +51,29 @@ WS: [ \t\n\r]+ -> skip ;
 OTRO : . ;
 
 // Definir una Expresión Regular para capturar fechas correspondientes a los meses pares (formato DD/MM/YYYY).
-meses_pares: DIGIT DIGIT '/' ( '02' | '04' | '06' | '08' | '10' | '12' ) '/' DIGIT DIGIT DIGIT DIGIT ;
+meses_pares : DIGIT DIGIT '/' ( '0' [2468] | '1' [02] ) '/' DIGIT DIGIT DIGIT DIGIT ;
 //             dia        /     meses pares                               /     año
 
+
+
 //Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 08:00 y las 12:59 (formato HH:MM).
-hora_manana: '08' | '09' | '1' DIGIT ':' DIGIT DIGIT | '12' ':' ('0' DIGIT | '1' '0' | '1' '1' | '1' '2') ;
+hora_manana : '0' [8-9] ':' DIGIT DIGIT
+            | '1' [0-2] ':' DIGIT DIGIT
+            ;
 
 //Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 18:30 y las 21:30 (formato HH:MM).
-hora_noche: ('18' | '19' | '20' | '21') ':' ('3' '0' | '3' '1' | '0' DIGIT) ;
+hora_noche : '1' [8-9] ':' '3' [0-9]
+           | '1' [9] ':' '3' [0]
+           | '2' [0-1] ':' '3' [0]
+           | '2' [1] ':' '3' [0]
+           ;
+
  
 //Al ejecutar el programa, deberá imprimir en pantalla el número de línea, el tipo de token y el token encontrado (ver archivo ejemplo adjunto).
 
-s: meses_pares { System.out.println("meses_pares ->" + $meses_pares.getText() + "<--"); } s
-| hora_manana  { System.out.println("hora_manana ->" + $hora_manana.getText() + "<--"); } s
-| hora_noche { System.out.println("hora_noche ->" + $hora_noche.getText() + "<--"); } s
+s: meses_pares  s
+| hora_manana   s
+| hora_noche s
 | OTRO s
 | EOF   
 ;
