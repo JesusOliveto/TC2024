@@ -69,10 +69,10 @@ HORA_MANANA : '0' ('8' | '9') ':' DIGIT DIGIT
             ;
 
 //Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 18:30 y las 21:30 (formato HH:MM).
-HORA_NOCHE : '1' '8' ':' ('0'|'1'|'2'|'3') DIGIT
+HORA_NOCHE : '1' '8' ':' ('3'|'4'|'5') DIGIT
            | '1' '9' ':' DIGIT DIGIT
            | '2' '0' ':' DIGIT DIGIT
-           | '2' '1' ':' ('0'|'1'|'2'|'3') DIGIT
+           | '2' '1' ':' ('0'|'1'|'2') DIGIT
            ;
 
 HORA_CUALQUIERA : DIGIT DIGIT ':' DIGIT DIGIT
