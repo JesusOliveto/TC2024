@@ -42,55 +42,131 @@ grammar compiladores;
 //     |
 //     ;
 
-//------------------------------------------------------------------------------
-// //ENTREGABLE 2
+// //------------------------------------------------------------------------------
+// // //ENTREGABLE 2
 
-// TOKENS
-DIGIT: [0-9] ;
-OTRO : . ;
-PARES: [02468] ;
-SEPARADOR: '/' ;
-SALTO_LINEA: '\r'? '\n' | '\r' ;
+// // TOKENS
+// DIGIT: [0-9] ;
+// OTRO : . ;
+// PARES: [02468] ;
+// SEPARADOR: '/' ;
+// SALTO_LINEA: '\r'? '\n' | '\r' ;
 
 
-// Definir una Expresión Regular para capturar fechas correspondientes a los meses pares (formato DD/MM/YYYY).
-MESES_PARES : DIGIT DIGIT SEPARADOR PARES PARES SEPARADOR DIGIT DIGIT DIGIT DIGIT
-            | DIGIT DIGIT SEPARADOR DIGIT PARES SEPARADOR DIGIT DIGIT DIGIT DIGIT
+// // Definir una Expresión Regular para capturar fechas correspondientes a los meses pares (formato DD/MM/YYYY).
+// MESES_PARES : DIGIT DIGIT SEPARADOR PARES PARES SEPARADOR DIGIT DIGIT DIGIT DIGIT
+//             | DIGIT DIGIT SEPARADOR DIGIT PARES SEPARADOR DIGIT DIGIT DIGIT DIGIT
+//             ;
+// //             dia        /   meses pares    /     año
+
+// FECHA : DIGIT DIGIT SEPARADOR DIGIT DIGIT SEPARADOR DIGIT DIGIT DIGIT DIGIT
+//       ;
+
+
+// //Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 08:00 y las 12:59 (formato HH:MM).
+// HORA_MANANA : '0' ('8' | '9') ':' DIGIT DIGIT
+//             | '1' ('0' | '1' | '2') ':' DIGIT DIGIT
+//             ;
+
+// //Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 18:30 y las 21:30 (formato HH:MM).
+// HORA_NOCHE : '1' '8' ':' ('3'|'4'|'5') DIGIT
+//            | '1' '9' ':' DIGIT DIGIT
+//            | '2' '0' ':' DIGIT DIGIT
+//            | '2' '1' ':' ('0'|'1'|'2') DIGIT
+//            ;
+
+// HORA_CUALQUIERA : DIGIT DIGIT ':' DIGIT DIGIT
+//                 ;
+
+
+
+
+// //Al ejecutar el programa, deberá imprimir en pantalla el número de línea, el tipo de token y el token encontrado (ver archivo ejemplo adjunto).
+
+// si : s EOF;
+
+// s : MESES_PARES {System.out.println("MES PAR ->" + $MESES_PARES.getText() + "<--" + "EN LINEA" + $MESES_PARES.getLine());} s
+//   | FECHA s
+//   | HORA_MANANA {System.out.println("HORA MANANA ->" + $HORA_MANANA.getText() + "<--" + "EN LINEA " + $HORA_MANANA.getLine());} s
+//   | HORA_NOCHE  {System.out.println("HORA NOCHE ->" + $HORA_NOCHE.getText() + "<--" + "EN LINEA " + $HORA_NOCHE.getLine());} s
+//   | HORA_CUALQUIERA s
+//   | OTRO  s
+//   | SALTO_LINEA s
+//   | EOF
+//   ;
+
+//----------------------------------------------------------------------------------------------
+// clase 9/4 
+
+
+// ENTRADA: 
+// {
+//       int x;
+//       {
+//             x=0;
+//       }
+//       { int y; y= x+5; }
+// }
+
+//tokens
+PA : '(' ;
+PC : ')' ; 
+CA : '[' ;
+CC : ']' ;
+LA : '{' ;
+LC : '}' ; 
+fragment LETRA : [A-Za-z] ;
+fragment DIGITO : [0-9] ;
+WS : [ \t\n\r]+ -> skip ;
+
+//simbolos
+PYC : ';' ;
+IGUAL : '=' ;
+MAS : '+' ;
+COMA : ',' ;
+
+//palabras reservadas
+INT : 'int' ;
+DOUBLE : 'double' ;
+
+
+NUMERO : DIGITO+ ;
+ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
+
+programa : instrucciones EOF ;
+
+instrucciones : instruccion instrucciones
+              | 
+              ;
+
+instruccion : LA instrucciones LC
+            |declaracion
+            |asignacion
             ;
-//             dia        /   meses pares    /     año
 
-FECHA : DIGIT DIGIT SEPARADOR DIGIT DIGIT SEPARADOR DIGIT DIGIT DIGIT DIGIT
-      ;
+// expresiones regulares y reglas sintácticas que contemple las siguientes instrucciones:
+// declaracion -> int x;
+//                double y;
+//                int z = 0;
+//                double w, q, t;
+//                int a = 5, b, c = 10;
 
+// asignacion -> x = 1;
+//               z = y;
 
-//Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 08:00 y las 12:59 (formato HH:MM).
-HORA_MANANA : '0' ('8' | '9') ':' DIGIT DIGIT
-            | '1' ('0' | '1' | '2') ':' DIGIT DIGIT
+// iwhile -> while (x comp y) { instrucciones }
+
+declaracion : INT ID PYC
+            |DOUBLE ID PYC
+            |INT ID IGUAL NUMERO PYC
+            |DOUBLE ID IGUAL NUMERO PYC
+            |INT (ID COMA)+ ID PYC
+            |DOUBLE (ID COMA)+ ID PYC
+            |INT (ID COMA)+ ID IGUAL NUMERO PYC
+            |DOUBLE (ID COMA)+ ID IGUAL NUMERO PYC
+            |INT ID IGUAL NUMERO COMA ID COMA ID IGUAL NUMERO PYC  //CROTO
             ;
 
-//Definir una Expresión Regular para capturar horas correspondientes a las horas entre las 18:30 y las 21:30 (formato HH:MM).
-HORA_NOCHE : '1' '8' ':' ('3'|'4'|'5') DIGIT
-           | '1' '9' ':' DIGIT DIGIT
-           | '2' '0' ':' DIGIT DIGIT
-           | '2' '1' ':' ('0'|'1'|'2') DIGIT
+asignacion : ID IGUAL NUMERO PYC
+            |ID IGUAL ID PYC
            ;
-
-HORA_CUALQUIERA : DIGIT DIGIT ':' DIGIT DIGIT
-                ;
-
-
-
-
-//Al ejecutar el programa, deberá imprimir en pantalla el número de línea, el tipo de token y el token encontrado (ver archivo ejemplo adjunto).
-
-si : s EOF;
-
-s : MESES_PARES {System.out.println("MES PAR ->" + $MESES_PARES.getText() + "<--" + "EN LINEA" + $MESES_PARES.getLine());} s
-  | FECHA s
-  | HORA_MANANA {System.out.println("HORA MANANA ->" + $HORA_MANANA.getText() + "<--" + "EN LINEA " + $HORA_MANANA.getLine());} s
-  | HORA_NOCHE  {System.out.println("HORA NOCHE ->" + $HORA_NOCHE.getText() + "<--" + "EN LINEA " + $HORA_NOCHE.getLine());} s
-  | HORA_CUALQUIERA s
-  | OTRO  s
-  | SALTO_LINEA s
-  | EOF
-  ;
