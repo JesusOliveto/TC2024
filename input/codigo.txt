@@ -1,7 +1,13 @@
-{
-       int x;
-       {
-             x=0;
-       }
-       { int y; y= x+5; }
+int x;
+double y;
+int z = 0;
+double w, q ,t;
+int a=5, b, c=10;
+
+x=1;
+z=y;
+
+while (x > y ){
+      x = x + 1;
+      y = y + 1;
 }

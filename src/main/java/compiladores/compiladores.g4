@@ -124,11 +124,21 @@ PYC : ';' ;
 IGUAL : '=' ;
 MAS : '+' ;
 COMA : ',' ;
+MAYOR : '>' ;
+MENOR : '<' ;
+MAYORIGUAL : '>=' ;
+MENORIGUAL : '<=' ;
+IGUALIGUAL : '==' ;
+DIFERENTE : '!=' ;
+
 
 //palabras reservadas
 INT : 'int' ;
 DOUBLE : 'double' ;
+WHILE : 'while' ;
 
+DT : INT | DOUBLE ;
+COMP : MAYOR | MENOR | MAYORIGUAL | MENORIGUAL | IGUALIGUAL | DIFERENTE ;
 
 NUMERO : DIGITO+ ;
 ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
@@ -142,6 +152,7 @@ instrucciones : instruccion instrucciones
 instruccion : LA instrucciones LC
             |declaracion
             |asignacion
+            |while
             ;
 
 // expresiones regulares y reglas sintácticas que contemple las siguientes instrucciones:
@@ -156,17 +167,22 @@ instruccion : LA instrucciones LC
 
 // iwhile -> while (x comp y) { instrucciones }
 
-declaracion : INT ID PYC
-            |DOUBLE ID PYC
-            |INT ID IGUAL NUMERO PYC
-            |DOUBLE ID IGUAL NUMERO PYC
-            |INT (ID COMA)+ ID PYC
-            |DOUBLE (ID COMA)+ ID PYC
-            |INT (ID COMA)+ ID IGUAL NUMERO PYC
-            |DOUBLE (ID COMA)+ ID IGUAL NUMERO PYC
-            |INT ID IGUAL NUMERO COMA ID COMA ID IGUAL NUMERO PYC  //CROTO
+
+declaracion : DT ID PYC
+            | DT ID IGUAL NUMERO COMA declaracion
+            | DT asignacion PYC
+            | DT ID COMA declaracion
+            | ID COMA declaracion
+            | ID IGUAL NUMERO PYC
+            | ID PYC
             ;
 
+
 asignacion : ID IGUAL NUMERO PYC
-            |ID IGUAL ID PYC
+            |ID COMA asignacion
+            |ID COMA declaracion PYC
            ;
+
+while : WHILE PA ID COMP ID PC LA instruccion LC
+      ;
+
