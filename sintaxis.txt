@@ -177,3 +177,60 @@ $term                         6)-4$ Derivar
 $exp term                     6)-4$ Derivar
 $exp NUMERO                   6)-4$ Match 6
 $exp                           )-4$ ERROR
+
+Realizar la tabla de Análisis Sintáctico Ascendente para la entrada
+7 - ( 2 + 9 )
+
+$                       7-(2+9)$ Desplazar
+$7                       -(2+9)$ Reducir term -> NUMERO
+$term                    -(2+9)$ Desplazar
+$term  -                  (2+9)$ Desplazar
+$term  - (                 2+9)$ Desplazar
+$term  - ( 2                +9)$ Reducir term -> NUMERO
+$term  - ( term             +9)$ Desplazar
+$term  - ( term +            9)$ Desplazar
+$term  - ( term + 9           )$ Reducir term -> NUMERO
+$term  - ( term + term        )$ Reducir exp -> '+' term
+$term  - ( term exp           )$ Reducir term -> term exp
+$term  - ( term               )$ Desplazar
+$term -  ( term )              $ Reducir term -> '(' term ')'
+$term -  term                  $ Reducir exp -> '-' term
+$term exp                      $ Reducir term -> term exp
+$term                          $ Reducir operacion -> term
+$operacion                     $ OK
+
+
+Realizar la tabla de Análisis Sintáctico Ascendente para la entrada
+5 + ( 6 - 4
+
+$                       5+(6-4$ Desplazar
+$5                       +(6-4$ Reducir term -> NUMERO
+$term                    +(6-4$ Desplazar
+$term  +                  (6-4$ Desplazar
+$term  + (                 6-4$ Desplazar
+$term  + ( 6                -4$ Reducir term -> NUMERO
+$term  + ( term             -4$ Desplazar
+$term  + ( term -            4$ Desplazar
+$term  + ( term - 4           $ Reducir term -> NUMERO
+$term  + ( term - term        $ Reducir exp -> '-' term
+$term  + ( term exp           $ Reducir term -> term exp
+$term  + ( term               $ ERROR
+
+Realizar la tabla de Análisis Sintáctico Ascendente para la entrada
+5 + 6 ) - 4
+
+$                       5+6)-4$ Desplazar
+$5                       +6)-4$ Reducir term -> NUMERO
+$term                    +6)-4$ Desplazar
+$term  +                  6)-4$ Desplazar
+$term  + 6                 )-4$ Reducir term -> NUMERO
+$term  + term              )-4$ Reducir exp -> '+' term
+$term exp                  )-4$ Reducir term -> term exp
+$term                      )-4$ Desplazar
+$term  )                   -4$ Desplazar
+$term  ) -                  4$ Desplazar
+$term  ) - 4                 $ Reducir term -> NUMERO
+$term  ) - term              $ Reducir exp -> '-' term
+$term  ) term                $ Reducir term -> term exp
+$term  ) term                $ ERROR
+
