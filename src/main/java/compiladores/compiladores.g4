@@ -107,14 +107,17 @@ WS : [ \t\n\r]+ -> skip ;
 //simbolos
 PYC : ';' ;
 IGUAL : '=' ;
-MAS : '+' ;
+fragment MAS : '+' ;
+fragment MENOS : '-' ;
+fragment MULTIPLICACION : '*' ;
+fragment DIVISION : '/' ;
 COMA : ',' ;
-MAYOR : '>' ;
-MENOR : '<' ;
-MAYORIGUAL : '>=' ;
-MENORIGUAL : '<=' ;
-IGUALIGUAL : '==' ;
-DIFERENTE : '!=' ;
+fragment MAYOR : '>' ;
+fragment MENOR : '<' ;
+fragment MAYORIGUAL : '>=' ;
+fragment MENORIGUAL : '<=' ;
+fragment IGUALIGUAL : '==' ;
+fragment DIFERENTE : '!=' ;
 
 
 //palabras reservadas
@@ -123,6 +126,7 @@ WHILE : 'while' ;
 
 DT : 'int' | 'double';
 COMP : MAYOR | MENOR | MAYORIGUAL | MENORIGUAL | IGUALIGUAL | DIFERENTE ;
+OPERADOR : MAS | MENOS | MULTIPLICACION | DIVISION ;
 
 NUMERO : DIGITO+ ;
 ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
@@ -135,6 +139,7 @@ instrucciones : instruccion instrucciones
 
 instruccion :declaracion PYC
             |asignacion PYC
+            |operacion PYC
             |while
             ;
 
@@ -151,7 +156,8 @@ declaracion : DT ID
 asignacion : ID IGUAL NUMERO 
             |ID COMA asignacion
             |ID COMA declaracion 
-            |ID IGUAL ID 
+            |ID IGUAL ID
+            |ID IGUAL operacion
            ;
 
 
@@ -159,6 +165,12 @@ condicion   : ID COMP ID
             | ID COMP NUMERO
             | NUMERO COMP ID
             | NUMERO COMP NUMERO
+            ;
+
+operacion   : ID OPERADOR ID
+            | ID OPERADOR NUMERO
+            | NUMERO OPERADOR ID
+            | NUMERO OPERADOR NUMERO
             ;
 
 bloque : LA instrucciones LC
