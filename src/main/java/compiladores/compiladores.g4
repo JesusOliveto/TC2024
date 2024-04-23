@@ -92,14 +92,6 @@ grammar compiladores;
 // clase 9/4 
 
 
-// ENTRADA: 
-// {
-//       int x;
-//       {
-//             x=0;
-//       }
-//       { int y; y= x+5; }
-// }
 
 //tokens
 PA : '(' ;
@@ -141,40 +133,38 @@ instrucciones : instruccion instrucciones
               | 
               ;
 
-instruccion : LA instrucciones LC
-            |declaracion
-            |asignacion
+instruccion :declaracion PYC
+            |asignacion PYC
             |while
             ;
 
-// expresiones regulares y reglas sintácticas que contemple las siguientes instrucciones:
-// declaracion -> int x;
-//                double y;
-//                int z = 0;
-//                double w, q, t;
-//                int a = 5, b, c = 10;
-
-// asignacion -> x = 1;
-//               z = y;
-
-// iwhile -> while (x comp y) { instrucciones }
-
-
-declaracion : DT ID PYC
+declaracion : DT ID 
             | DT ID IGUAL NUMERO COMA declaracion
-            | DT asignacion PYC
+            | DT asignacion 
             | DT ID COMA declaracion
             | ID COMA declaracion
-            | ID IGUAL NUMERO PYC
-            | ID PYC
+            | ID IGUAL NUMERO 
+            | ID 
             ;
 
 
-asignacion : ID IGUAL NUMERO PYC
+asignacion : ID IGUAL NUMERO 
             |ID COMA asignacion
-            |ID COMA declaracion PYC
+            |ID COMA declaracion 
+            |ID IGUAL ID 
            ;
 
-while : WHILE PA ID COMP ID PC LA instruccion LC
+
+condicion   : ID COMP ID
+            | ID COMP NUMERO
+            | NUMERO COMP ID
+            | NUMERO COMP NUMERO
+            ;
+
+bloque : LA instrucciones LC
+       ;
+
+while : WHILE PA condicion PC bloque
       ;
+
 
