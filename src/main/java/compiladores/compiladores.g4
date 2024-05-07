@@ -111,6 +111,7 @@ fragment MAS : '+' ;
 fragment MENOS : '-' ;
 fragment MULTIPLICACION : '*' ;
 fragment DIVISION : '/' ;
+fragment MODULO : '%' ;
 COMA : ',' ;
 fragment MAYOR : '>' ;
 fragment MENOR : '<' ;
@@ -180,3 +181,22 @@ while : WHILE PA condicion PC bloque
       ;
 
 
+//------------------------------------
+asignacion : ID IGUAL expr PYC
+           ;
+
+expresiones : expr PYC expresiones EOF;
+
+expr  : term;
+
+term  : factor t;
+
+t     : MAS term
+      | MENOS term
+      | 
+      ;
+
+factor : NUMERO
+       | ID
+       | PA expr PC
+       ;
