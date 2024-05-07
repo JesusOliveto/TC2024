@@ -185,14 +185,17 @@ while : WHILE PA condicion PC bloque
 asignacion : ID IGUAL expr PYC
            ;
 
-expresiones : expr PYC expresiones EOF;
+expresiones   : expr PYC expresiones
+              | EOF;
 
-expr  : term;
+expr  : e;
 
-term  : factor t;
+e : term t;
 
-t     : MAS term
-      | MENOS term
+term  : factor f;
+
+t     : MAS term t
+      | MENOS term t
       | 
       ;
 
@@ -200,3 +203,9 @@ factor : NUMERO
        | ID
        | PA expr PC
        ;
+
+f : MULTIPLICACION factor f
+  | DIVISION factor f
+  | MODULO factor f
+  |
+  ;
