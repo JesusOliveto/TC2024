@@ -32,7 +32,8 @@ instrucciones : instruccion*
               ;
 
 
-instruccion :declaracion_funcion
+instruccion :bloque
+            |declaracion_funcion
             |asignacion 
             |while
             |if
@@ -94,16 +95,16 @@ return : RETURN expresiones
 bloque : LA instruccion* LC
        ;
 
-while : WHILE PA condicion PC (bloque | instruccion)
+while : WHILE PA condicion PC instruccion
       ;
 
-if : IF PA condicion PC (bloque | instruccion) else?
+if : IF PA condicion PC instruccion else?
    ;
 
-else : ELSE (bloque | instruccion)
+else : ELSE instruccion
      ;
 
-for : FOR PA ((declaracion|asignacion)|PYC) (condiciones) PYC asignacion? PC (bloque | instruccion)
+for : FOR PA ((declaracion|asignacion)|PYC) (condiciones) PYC asignacion? PC instruccion
     ;
 
 declaracion_funcion : DT ID PA parametros PC PYC?
@@ -117,6 +118,7 @@ llamada_funcion : ID PA parametros PC PYC
 
 parametros : DT? (ID | NUMERO) (COMA parametros)?
             | declaracion (COMA parametros)?
+            |
             ;
 
 //-----------------------------
