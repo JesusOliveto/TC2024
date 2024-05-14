@@ -7,43 +7,6 @@ grammar compiladores;
 
 //parcial 1
 
-// clase 9/4 
-
-
-
-//tokens
-PA : '(' ;
-PC : ')' ; 
-CA : '[' ;
-CC : ']' ;
-LA : '{' ;
-LC : '}' ; 
-fragment LETRA : [A-Za-z] ;
-fragment DIGITO : [0-9] ;
-WS : [ \t\n\r]+ -> skip ;
-
-//simbolos
-PYC : ';' ;
-IGUAL : '=' ;
-MAS : '+' ;
-MASMAS : '++' ;
-MENOS : '-' ;
-MENOSMENOS : '--' ;
-fragment MULTIPLICACION : '*' ;
-fragment DIVISION : '/' ;
-fragment MODULO : '%' ;
-COMA : ',' ;
-fragment MAYOR : '>' ;
-fragment MENOR : '<' ;
-fragment MAYORIGUAL : '>=' ;
-fragment MENORIGUAL : '<=' ;
-fragment IGUALIGUAL : '==' ;
-fragment DIFERENTE : '!=' ;
-fragment AND : '&&' ;
-fragment OR : '||' ;
-fragment NOT : '!' ;
-
-
 
 
 //palabras reservadas
@@ -53,9 +16,10 @@ FOR : 'for' ;
 IF : 'if' ;
 ELSE : 'else' ;
 
-DT : 'int' | 'double';
+DT : 'int' | 'double' | 'void' | 'char' | 'float' | 'string' | 'bool' ;
 COMP : MAYOR | MENOR | MAYORIGUAL | MENORIGUAL | IGUALIGUAL | DIFERENTE ;
-OPERADOR : MAS | MENOS | MULTIPLICACION | DIVISION | MODULO ;
+SUMA : MAS | MENOS ;
+OPERADOR :  MULTIPLICACION | DIVISION | MODULO ;
 LOGICO : AND | OR | NOT ;
 
 NUMERO : DIGITO+ ;
@@ -67,11 +31,14 @@ instrucciones : instruccion*
               ;
 
 
-instruccion :declaracion 
+instruccion :declaracion_funcion
             |asignacion 
             |while
             |if
             |for
+            |declaracion 
+            |funcion
+            |llamada_funcion
             ;
 
 declaracion : DT ID PYC
@@ -81,19 +48,22 @@ declaracion : DT ID PYC
 
 
 asignacion : ID IGUAL expresiones
-           | ID MASMAS
-           | ID MENOSMENOS 
+           | ID MASMAS PYC?
+           | ID MENOSMENOS PYC? 
+           | ID
            ;
 
 expresiones   : expr PYC expresiones?
               ;
 
-expr  : term t?;
+expr  : e;
 
-term  : factor f?;
+e :  term t;
 
-t     : MAS term t?
-      | MENOS term t?
+term  : factor f;
+
+t     : SUMA term t
+      |
       ;
 
 factor : NUMERO
@@ -101,9 +71,10 @@ factor : NUMERO
        | PA expr PC
        ;
 
-f : OPERADOR factor f?
+f : OPERADOR factor f
   | MASMAS
   | MENOSMENOS
+  |
   ;
 
   
@@ -131,3 +102,48 @@ else : ELSE (bloque | instruccion)
 
 for : FOR PA ((declaracion|asignacion)|PYC) (condiciones) PYC asignacion? PC (bloque | instruccion)
     ;
+
+declaracion_funcion : DT ID PA declaracion PC PYC?
+                    ;
+
+funcion : declaracion_funcion bloque
+        ;
+
+llamada_funcion : ID PA expresiones PC
+                ;
+
+
+//-----------------------------
+//tokens
+PA : '(' ;
+PC : ')' ; 
+CA : '[' ;
+CC : ']' ;
+LA : '{' ;
+LC : '}' ; 
+fragment LETRA : [A-Za-z] ;
+fragment DIGITO : [0-9] ;
+WS : [ \t\n\r]+ -> skip ;
+
+//simbolos
+PYC : ';' ;
+IGUAL : '=' ;
+fragment MAS : '+' ;
+MASMAS : '++' ;
+fragment MENOS : '-' ;
+MENOSMENOS : '--' ;
+fragment MULTIPLICACION : '*' ;
+fragment DIVISION : '/' ;
+fragment MODULO : '%' ;
+COMA : ',' ;
+fragment MAYOR : '>' ;
+fragment MENOR : '<' ;
+fragment MAYORIGUAL : '>=' ;
+fragment MENORIGUAL : '<=' ;
+fragment IGUALIGUAL : '==' ;
+fragment DIFERENTE : '!=' ;
+fragment AND : '&&' ;
+fragment OR : '||' ;
+fragment NOT : '!' ;
+
+
