@@ -29,7 +29,7 @@ MAS : '+' ;
 MASMAS : '++' ;
 MENOS : '-' ;
 MENOSMENOS : '--' ;
-MULTIPLICACION : '*' ;
+fragment MULTIPLICACION : '*' ;
 fragment DIVISION : '/' ;
 fragment MODULO : '%' ;
 COMA : ',' ;
