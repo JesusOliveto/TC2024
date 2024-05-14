@@ -15,6 +15,7 @@ WHILE : 'while' ;
 FOR : 'for' ;
 IF : 'if' ;
 ELSE : 'else' ;
+RETURN : 'return' ;
 
 DT : 'int' | 'double' | 'void' | 'char' | 'float' | 'string' | 'bool' ;
 COMP : MAYOR | MENOR | MAYORIGUAL | MENORIGUAL | IGUALIGUAL | DIFERENTE ;
@@ -39,6 +40,7 @@ instruccion :declaracion_funcion
             |declaracion 
             |funcion
             |llamada_funcion
+            |return
             ;
 
 declaracion : DT ID PYC
@@ -50,7 +52,6 @@ declaracion : DT ID PYC
 asignacion : ID IGUAL expresiones
            | ID MASMAS PYC?
            | ID MENOSMENOS PYC? 
-           | ID
            ;
 
 expresiones   : expr PYC expresiones?
@@ -86,7 +87,9 @@ condiciones : condicion LOGICO condiciones
             | condicion
             ;
 
-
+return : RETURN expresiones
+       | RETURN PYC
+       ;
 
 bloque : LA instruccion* LC
        ;
@@ -103,15 +106,18 @@ else : ELSE (bloque | instruccion)
 for : FOR PA ((declaracion|asignacion)|PYC) (condiciones) PYC asignacion? PC (bloque | instruccion)
     ;
 
-declaracion_funcion : DT ID PA declaracion PC PYC?
+declaracion_funcion : DT ID PA parametros PC PYC?
                     ;
 
 funcion : declaracion_funcion bloque
         ;
 
-llamada_funcion : ID PA expresiones PC
+llamada_funcion : ID PA parametros PC PYC
                 ;
 
+parametros : DT? (ID | NUMERO) (COMA parametros)?
+            | declaracion (COMA parametros)?
+            ;
 
 //-----------------------------
 //tokens
