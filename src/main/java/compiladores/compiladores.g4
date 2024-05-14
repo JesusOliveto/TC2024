@@ -30,8 +30,8 @@ MASMAS : '++' ;
 MENOS : '-' ;
 MENOSMENOS : '--' ;
 MULTIPLICACION : '*' ;
-DIVISION : '/' ;
-MODULO : '%' ;
+fragment DIVISION : '/' ;
+fragment MODULO : '%' ;
 COMA : ',' ;
 fragment MAYOR : '>' ;
 fragment MENOR : '<' ;
@@ -88,13 +88,12 @@ asignacion : ID IGUAL expresiones
 expresiones   : expr PYC expresiones?
               ;
 
-expr  : term t;
+expr  : term t?;
 
-term  : factor f;
+term  : factor f?;
 
-t     : MAS term t
-      | MENOS term t
-      |
+t     : MAS term t?
+      | MENOS term t?
       ;
 
 factor : NUMERO
@@ -102,10 +101,9 @@ factor : NUMERO
        | PA expr PC
        ;
 
-f : OPERADOR factor f
+f : OPERADOR factor f?
   | MASMAS
   | MENOSMENOS
-  |
   ;
 
   
