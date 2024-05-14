@@ -63,16 +63,20 @@ ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
 
 programa : instrucciones EOF ;
 
-instrucciones : instruccion instrucciones
+instrucciones : instruccion instrucciones?
               | 
               ;
+
 
 instruccion :declaracion 
             |asignacion 
             |while
+            |if
+            |for
             ;
 
-declaracion : DT asignacion
+declaracion : DT ID PYC
+            | DT asignacion
             | 
             ;
 
@@ -118,17 +122,17 @@ condiciones : condicion LOGICO condiciones
 
 
 
-bloque : LA instrucciones LC
+bloque : LA instruccion* LC
        ;
 
-while : WHILE PA condicion PC bloque
+while : WHILE PA condicion PC (bloque | instruccion)
       ;
 
-if : IF PA condicion PC bloque else?
+if : IF PA condicion PC (bloque | instruccion) else?
    ;
 
-else : ELSE bloque
+else : ELSE (bloque | instruccion)
      ;
 
-for : FOR PA asignacion? PYC condicion? PYC asignacion? PC bloque
+for : FOR PA asignacion? PYC condicion? PYC asignacion? PC (bloque | instruccion)
     ;
