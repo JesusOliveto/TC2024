@@ -63,8 +63,7 @@ ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
 
 programa : instrucciones EOF ;
 
-instrucciones : instruccion instrucciones?
-              | 
+instrucciones : instruccion*
               ;
 
 
@@ -77,16 +76,16 @@ instruccion :declaracion
 
 declaracion : DT ID PYC
             | DT asignacion
-            | 
             ;
 
 
 
 asignacion : ID IGUAL expresiones
+           | ID MASMAS
+           | ID MENOSMENOS 
            ;
 
-expresiones   : expr PYC expresiones
-              |
+expresiones   : expr PYC expresiones?
               ;
 
 expr  : term t;
@@ -95,8 +94,7 @@ term  : factor f;
 
 t     : MAS term t
       | MENOS term t
-      | MASMAS
-      | MENOSMENOS
+      |
       ;
 
 factor : NUMERO
@@ -104,20 +102,19 @@ factor : NUMERO
        | PA expr PC
        ;
 
-f : MULTIPLICACION factor f
-  | DIVISION factor f
-  | MODULO factor f
+f : OPERADOR factor f
+  | MASMAS
+  | MENOSMENOS
   |
   ;
 
   
 
 condicion   : (ID | NUMERO) COMP (ID | NUMERO)
-            | 
             ;
 
 condiciones : condicion LOGICO condiciones
-            | 
+            | condicion
             ;
 
 
@@ -134,5 +131,5 @@ if : IF PA condicion PC (bloque | instruccion) else?
 else : ELSE (bloque | instruccion)
      ;
 
-for : FOR PA asignacion? PYC condicion? PYC asignacion? PC (bloque | instruccion)
+for : FOR PA ((declaracion|asignacion)|PYC) (condiciones) PYC asignacion? PC (bloque | instruccion)
     ;

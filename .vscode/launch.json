@@ -10,6 +10,7 @@
             "request": "launch",
             // Archivo con la gramatica
             "grammar": "${file}",
+            //"grammar": "src/main/java/compiladores/compiladores.g4",
             // Archivo a parsear
             "input": "input/codigo.txt",
             // Simbolo inicial
