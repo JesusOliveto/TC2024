@@ -42,6 +42,7 @@ instruccion :bloque
             |funcion
             |llamada_funcion
             |return
+            |ternario
             ;
 
 declaracion : DT ID PYC
@@ -120,6 +121,9 @@ parametros : DT? (ID | NUMERO) (COMA parametros)?
             | declaracion (COMA parametros)?
             |
             ;
+
+ternario : condiciones '?' expr ':' expr
+        ;
 
 //-----------------------------
 //tokens
